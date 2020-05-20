@@ -15,11 +15,15 @@ module.exports = {
         return res.status(400).send({ erro: "Produto já cadastrado" });
       }
 
-      await Products.create({ name, description, image: filename });
+      const product = await Products.create({
+        name,
+        description,
+        image: filename,
+      });
 
       return res
         .status(200)
-        .json({ message: "Produto cadastrado com sucesso" });
+        .json({ message: "Produto cadastrado com sucesso", id: product._id });
     } catch (error) {
       const erro = {
         message: "Erro ao cadastrar o produto",

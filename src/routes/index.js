@@ -9,6 +9,7 @@ const PartnerController = require("../controllers/partnerController");
 const PortifolioController = require("../controllers/portifolioController");
 const ProductController = require("../controllers/productController");
 const PagesController = require("../controllers/pagesController");
+const DashboardController = require("../controllers/dashboardController");
 
 //CADASTRO DE PRODUTOS
 router.post("/products", upload.single("image"), ProductController.store);
@@ -58,5 +59,9 @@ router.put(
   PartnerController.update
 );
 router.delete("/professional/:id", PartnerController.remove);
+
+//DASHBOARD
+router.get("/dashboard", DashboardController.dashboard);
+router.get("/listProducts", DashboardController.findProducts);
 
 module.exports = router;
