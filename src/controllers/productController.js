@@ -15,7 +15,7 @@ module.exports = {
         return res.status(400).send({ erro: "Produto já cadastrado" });
       }
 
-      await Products.create({ name, description, banner: filename });
+      await Products.create({ name, description, image: filename });
 
       return res
         .status(200)
@@ -23,6 +23,24 @@ module.exports = {
     } catch (error) {
       const erro = {
         message: "Erro ao cadastrar o produto",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  },
+
+  async saveBanner(req, res) {
+    const { filename } = req.file;
+    const { id } = req.params;
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        { $set: { banner: filename } }
+      );
+      return res.status(200).json({ message: "Banner cadastrado com sucesso" });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao salvar o banner do produto",
         type: error.message,
       };
       return res.status(400).json(erro);
@@ -116,7 +134,17 @@ module.exports = {
         `${product.banner}`
       );
 
+      const pathToImage = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "uploads",
+        `${product.image}`
+      );
+
       await ulinkFile(pathToBanner);
+
+      await ulinkFile(pathToImage);
 
       async function ulinkFile(filePath) {
         await fs.unlink(filePath, function (err) {

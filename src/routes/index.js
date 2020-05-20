@@ -11,11 +11,16 @@ const ProductController = require("../controllers/productController");
 const PagesController = require("../controllers/pagesController");
 
 //CADASTRO DE PRODUTOS
-router.post("/products", upload.single("banner"), ProductController.store);
+router.post("/products", upload.single("image"), ProductController.store);
 router.get("/products", ProductController.index);
 router.delete("/products/:id", ProductController.remove);
 router.get("/productsFind/:id", ProductController.find);
 router.put("/products/:id", ProductController.update);
+router.put(
+  "/banner/:id",
+  upload.single("banner"),
+  ProductController.saveBanner
+);
 
 //CADASTRO DAS PÁGINAS
 router.put("/pagesConfig/:id", PagesController.storePageConfig);
