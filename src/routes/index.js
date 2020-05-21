@@ -10,6 +10,7 @@ const PortifolioController = require("../controllers/portifolioController");
 const ProductController = require("../controllers/productController");
 const PagesController = require("../controllers/pagesController");
 const DashboardController = require("../controllers/dashboardController");
+const DepoimentsController = require("../controllers/depoimentsController");
 
 //CADASTRO DE PRODUTOS
 router.post("/products", upload.single("image"), ProductController.store);
@@ -64,5 +65,12 @@ router.get("/professional", PartnerController.index);
 //DASHBOARD
 router.get("/dashboard", DashboardController.dashboard);
 router.get("/listProducts", DashboardController.findProducts);
+
+//DEPOIMENTOS
+router.post("/depoiments", upload.single("image"), DepoimentsController.store);
+router.post("/sendVideo", DepoimentsController.sendVideo);
+router.put("/uploadVideo", DepoimentsController.updateVideos);
+router.put("/uploadImage", DepoimentsController.updateImages);
+router.get("/depoiments", DepoimentsController.index);
 
 module.exports = router;
