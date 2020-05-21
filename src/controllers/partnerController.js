@@ -1,6 +1,7 @@
 const Partner = require("../models/professional");
 const fs = require("fs");
 const path = require("path");
+const configs = require("../configs/index");
 
 module.exports = {
   async store(req, res) {
@@ -93,6 +94,20 @@ module.exports = {
     } catch (error) {
       const erro = {
         message: "Erro ao excluir o profissional",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  },
+
+  async index(req, res) {
+    try {
+      const partners = await Partner.find();
+      const urlPhoto = `${configs.photo_url}/img`;
+      return res.status(200).json({ partners, urlPhoto });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao buscar informações",
         type: error.message,
       };
       return res.status(400).json(erro);

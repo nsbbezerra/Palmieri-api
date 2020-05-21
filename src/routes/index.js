@@ -59,6 +59,7 @@ router.put(
   PartnerController.update
 );
 router.delete("/professional/:id", PartnerController.remove);
+router.get("/professional", PartnerController.index);
 
 //DASHBOARD
 router.get("/dashboard", DashboardController.dashboard);
