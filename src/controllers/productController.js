@@ -130,6 +130,19 @@ module.exports = {
         });
       }
 
+      if (product.comments.length) {
+        await product.comments.forEach((element) => {
+          let file = path.resolve(
+            __dirname,
+            "..",
+            "..",
+            "uploads",
+            `${element.image}`
+          );
+          ulinkFile(file);
+        });
+      }
+
       const pathToBanner = path.resolve(
         __dirname,
         "..",

@@ -11,6 +11,7 @@ const ProductController = require("../controllers/productController");
 const PagesController = require("../controllers/pagesController");
 const DashboardController = require("../controllers/dashboardController");
 const DepoimentsController = require("../controllers/depoimentsController");
+const ProductEditController = require("../controllers/editProductController");
 
 //CADASTRO DE PRODUTOS
 router.post("/products", upload.single("image"), ProductController.store);
@@ -22,6 +23,19 @@ router.put(
   "/banner/:id",
   upload.single("banner"),
   ProductController.saveBanner
+);
+
+//EDIÇÃO DE PRODUTOS
+router.put("/changeInfo/:id", ProductEditController.editInfo);
+router.put(
+  "/changeBanner/:id",
+  upload.single("banner"),
+  ProductEditController.changeBanner
+);
+router.put(
+  "/changeImage/:id",
+  upload.single("image"),
+  ProductEditController.changeImage
 );
 
 //CADASTRO DAS PÁGINAS
