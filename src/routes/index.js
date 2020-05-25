@@ -26,6 +26,7 @@ router.put(
 
 //CADASTRO DAS PÁGINAS
 router.put("/pagesConfig/:id", PagesController.storePageConfig);
+router.put("/detailsConfig/:id", PagesController.storeDetailsConfig);
 router.put(
   "/saveCards/:id",
   upload.single("cardImage"),
@@ -42,6 +43,11 @@ router.put(
   PagesController.saveDetailsImages
 );
 router.put("/saveDetailsList/:id", PagesController.saveDetailsList);
+router.put(
+  "/saveComments/:id",
+  upload.single("comments"),
+  PagesController.saveComments
+);
 
 //CADASTRO DOS PORTIFÓLIOS
 router.post(

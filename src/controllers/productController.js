@@ -180,7 +180,8 @@ module.exports = {
 
     try {
       const product = await Products.findOne({ _id: id });
-      return res.status(200).json(product);
+      const urlPhoto = `${configs.photo_url}/img`;
+      return res.status(200).json({ product, urlPhoto });
     } catch (error) {
       const erro = {
         message: "Erro ao listar o produto",
