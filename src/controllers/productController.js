@@ -25,7 +25,6 @@ module.exports = {
         .status(200)
         .json({ message: "Produto cadastrado com sucesso", id: product._id });
     } catch (error) {
-      console.log(error);
       const erro = {
         message: "Erro ao cadastrar o produto",
         type: error.message,
