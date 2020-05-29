@@ -11,6 +11,7 @@ const PagesController = require("../controllers/pagesController");
 const DashboardController = require("../controllers/dashboardController");
 const DepoimentsController = require("../controllers/depoimentsController");
 const ProductEditController = require("../controllers/editProductController");
+const HomeController = require("../controllers/homeController");
 
 //CADASTRO DE PRODUTOS
 router.post("/products", upload.single("image"), ProductController.store);
@@ -91,5 +92,9 @@ router.post("/sendVideo", DepoimentsController.sendVideo);
 router.put("/uploadVideo", DepoimentsController.updateVideos);
 router.put("/uploadImage", DepoimentsController.updateImages);
 router.get("/depoiments", DepoimentsController.index);
+
+//HOME
+router.post("/home", HomeController.store);
+router.get("/home", HomeController.index);
 
 module.exports = router;
