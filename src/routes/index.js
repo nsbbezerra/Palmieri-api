@@ -4,7 +4,6 @@ const multer = require("multer");
 const multerConfig = require("../configs/multerConfig");
 const upload = multer(multerConfig);
 
-const ContactController = require("../controllers/contactController");
 const PartnerController = require("../controllers/partnerController");
 const PortifolioController = require("../controllers/portifolioController");
 const ProductController = require("../controllers/productController");

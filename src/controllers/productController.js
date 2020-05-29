@@ -1,4 +1,5 @@
 const Products = require("../models/products");
+const Catalog = require("../models/portifilio");
 const configs = require("../configs/index");
 const fs = require("fs");
 const path = require("path");
@@ -6,7 +7,7 @@ const path = require("path");
 module.exports = {
   async store(req, res) {
     const { filename } = req.file;
-    const { name, description } = req.body;
+    const { name, description, imageDescription } = req.body;
 
     try {
       const findProduct = await Products.findOne({ name });
@@ -19,6 +20,7 @@ module.exports = {
         name,
         description,
         image: filename,
+        imageDescription,
       });
 
       return res
@@ -90,9 +92,24 @@ module.exports = {
 
     try {
       const product = await Products.findOne({ _id: id });
+      const catalog = await Catalog.find({ product: id });
       const productLists = product.lists;
       const productCards = product.cards;
       const productsImages = product.detailsImage;
+
+      if (catalog.length) {
+        await catalog.forEach((element) => {
+          let file = path.resolve(
+            __dirname,
+            "..",
+            "..",
+            "uploads",
+            `${element.image}`
+          );
+          ulinkFile(file);
+        });
+      }
+
       if (product.firsPartOpt === "lists") {
         await productLists.forEach((element) => {
           let file = path.resolve(
@@ -177,6 +194,7 @@ module.exports = {
       }
 
       await Products.findOneAndDelete({ _id: id });
+      await Catalog.deleteMany({ product: id });
 
       return res.status(200).json({ message: "Produto excluído com sucesso" });
     } catch (error) {
