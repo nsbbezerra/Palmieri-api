@@ -53,9 +53,9 @@ module.exports = {
 
   async index(req, res) {
     try {
-      const home = Home.find();
+      const home = await Home.find();
       let info = home[0];
-      return res.status(200).json(info);
+      return res.status(200).json({ info });
     } catch (error) {
       const erro = {
         message: "Erro ao listar as configurações da página",
