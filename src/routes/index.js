@@ -94,7 +94,7 @@ router.put("/uploadImage", DepoimentsController.updateImages);
 router.get("/depoiments", DepoimentsController.index);
 
 //HOME
-router.post("/home", HomeController.store);
+router.post("/home", upload.single("banner"), HomeController.store);
 router.get("/home", HomeController.index);
 
 module.exports = router;
