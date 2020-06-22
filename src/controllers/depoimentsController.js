@@ -1,23 +1,15 @@
 const Depoiments = require("../models/depoiments");
 const config = require("../configs/index");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = {
   async store(req, res) {
     const { filename } = req.file;
-    const { title } = req.body;
+    const { text, author } = req.body;
 
     try {
-      const depoiments = await Depoiments.find();
-
-      if (depoiments.length) {
-        let id = depoiments[0]._id;
-        await Depoiments.findOneAndUpdate(
-          { _id: id },
-          { $push: { image: { photo: filename, title } } }
-        );
-      } else {
-        await Depoiments.create({ image: { photo: filename, title } });
-      }
+      await Depoiments.create({ avatar: filename, text, author });
 
       return res
         .status(200)
@@ -31,66 +23,43 @@ module.exports = {
     }
   },
 
-  async sendVideo(req, res) {
-    const { video } = req.body;
-    console.log(video);
-    try {
-      const depoiments = await Depoiments.find();
-      let id = depoiments[0]._id;
-
-      await Depoiments.findOneAndUpdate(
-        { _id: id },
-        { $push: { video: { url: video } } }
-      );
-
-      return res.status(200).json({ message: "Video cadastrado com sucesso" });
-    } catch (error) {
-      const erro = {
-        message: "Erro ao cadastrar o video",
-        type: error.message,
-      };
-      return res.status(400).json(erro);
-    }
-  },
-
-  async updateImages(req, res) {
-    const { images } = req.body;
+  async remove(req, res) {
+    const { id } = req.params;
 
     try {
-      const depoiments = await Depoiments.find();
-      let id = depoiments[0]._id;
+      const depoiment = await Depoiments.findOne({ _id: id });
 
-      await Depoiments.findOneAndUpdate(
-        { _id: id },
-        { $set: { image: images } }
+      const pathToImage = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "uploads",
+        `${depoiment.avatar}`
       );
 
-      return res.status(200).json({ message: "Atualizado com sucesso" });
+      await ulinkFile(pathToImage);
+
+      async function ulinkFile(filePath) {
+        await fs.unlink(filePath, function (err) {
+          if (err)
+            return res.status(400).json({
+              erro: {
+                message: "Erro ao deletar o arquivo",
+                type: err.message,
+              },
+            });
+          console.log("file deleted successfully");
+        });
+      }
+
+      await Depoiments.findOneAndRemove({ _id: id });
+
+      return res
+        .status(200)
+        .json({ message: "Depoimeto excluído com sucesso" });
     } catch (error) {
       const erro = {
-        message: "Erro ao atualizar depoimentos",
-        type: error.message,
-      };
-      return res.status(400).json(erro);
-    }
-  },
-
-  async updateVideos(req, res) {
-    const { videos } = req.body;
-
-    try {
-      const depoiments = await Depoiments.find();
-      let id = depoiments[0]._id;
-
-      await Depoiments.findOneAndUpdate(
-        { _id: id },
-        { $set: { video: videos } }
-      );
-
-      return res.status(200).json({ message: "Atualizado com sucesso" });
-    } catch (error) {
-      const erro = {
-        message: "Erro ao atualizar depoimentos",
+        message: "Erro ao excluir o depoimento",
         type: error.message,
       };
       return res.status(400).json(erro);
@@ -100,12 +69,12 @@ module.exports = {
   async index(req, res) {
     try {
       const depoiments = await Depoiments.find();
-      let allDepoiments = depoiments[0];
-      let urlImages = `${config.photo_url}/img`;
-      return res.status(200).json({ allDepoiments, urlImages });
+      const urlImage = config.photo_url;
+
+      return res.status(200).json({ depoiments, urlImage });
     } catch (error) {
       const erro = {
-        message: "Erro ao listar depoimentos",
+        message: "Erro ao buscar os depoimentos",
         type: error.message,
       };
       return res.status(400).json(erro);

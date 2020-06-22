@@ -1,15 +1,13 @@
 const Products = require("../models/products");
-const Partners = require("../models/professional");
 const Portifolio = require("../models/portifilio");
 
 module.exports = {
   async dashboard(req, res) {
     try {
       const products = await Products.find().countDocuments();
-      const partners = await Partners.find().countDocuments();
       const portifilio = await Portifolio.find().countDocuments();
 
-      return res.status(200).json({ products, partners, portifilio });
+      return res.status(200).json({ products, portifilio });
     } catch (error) {
       const erro = {
         message: "Ocorreu um Erro ao buscar as Informações",

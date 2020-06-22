@@ -1,10 +1,11 @@
-const mongoose = require('../database/index');
+const mongoose = require("../database/index");
 
 const portifolioSchema = new mongoose.Schema({
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Products' },
-    image: String
+  product: { type: mongoose.Schema.Types.ObjectId, ref: "Products" },
+  image: String,
+  imageDescription: String,
 });
 
-const Portifolio = mongoose.model('Portifolio', portifolioSchema);
+const Portifolio = mongoose.model("Portifolio", portifolioSchema);
 
 module.exports = Portifolio;

@@ -5,50 +5,39 @@ const configs = require("../configs/index");
 
 module.exports = {
   async store(req, res) {
-    const { product } = req.body;
     const { filename } = req.file;
+    const { product, imageDescription } = req.body;
 
     try {
-      await Portifolio.create({ product, image: filename });
+      await Portifolio.create({ product, imageDescription, image: filename });
       return res
         .status(200)
-        .json({ message: "Portifólio cadastrado com sucesso" });
+        .json({ message: "Item do catálogo cadastrado com sucesso" });
     } catch (error) {
       const erro = {
-        message: "Erro ao cadastrar o portifólio do produto",
+        message: "Erro ao cadastrar o item do catálogo",
         type: error.message,
       };
       return res.status(400).json(erro);
     }
   },
-  async index(req, res) {
-    const { id } = req.params;
 
-    try {
-      const portifolio = await Portifolio.find({ product: id });
-      const urlImage = `${configs.photo_url}/img/`;
-      return res.status(200).json({ portifolio, urlImage });
-    } catch (error) {
-      const erro = {
-        message: "Erro ao listar o portifólio do produto",
-        type: error.message,
-      };
-      return res.status(400).json(erro);
-    }
-  },
   async remove(req, res) {
     const { id } = req.params;
 
     try {
-      const porifolio = await Portifolio.findOne({ _id: id });
-      const pathToFile = path.resolve(
+      const catalog = await Portifolio.findOne({ _id: id });
+
+      const pathToImage = path.resolve(
         __dirname,
         "..",
         "..",
         "uploads",
-        `${porifolio.image}`
+        `${catalog.image}`
       );
-      await ulinkFile(pathToFile);
+
+      await ulinkFile(pathToImage);
+
       async function ulinkFile(filePath) {
         await fs.unlink(filePath, function (err) {
           if (err)
@@ -61,13 +50,29 @@ module.exports = {
           console.log("file deleted successfully");
         });
       }
-      await Portifolio.findOneAndDelete({ _id: id });
+
+      await Portifolio.findOneAndRemove({ _id: id });
+
       return res
         .status(200)
-        .json({ message: "Portifólio excluído com sucesso" });
+        .json({ message: "Item do catálogo excluído com sucesso" });
     } catch (error) {
       const erro = {
-        message: "Erro ao excluir o portifólio do produto",
+        message: "Erro ao cadastrar o item do catálogo",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  },
+
+  async show(req, res) {
+    const { product } = req.params;
+    try {
+      const catalog = await Portifolio.find({ product: product });
+      return res.status(200).json({ catalog });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao buscar o item do catálogo",
         type: error.message,
       };
       return res.status(400).json(erro);
