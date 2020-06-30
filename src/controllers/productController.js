@@ -28,6 +28,7 @@ module.exports = {
         slug,
         video,
         imageDescription,
+        active: true,
       });
       return res
         .status(200)
@@ -129,6 +130,24 @@ module.exports = {
     } catch (error) {
       const erro = {
         message: "Erro ao buscar os produtos",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  },
+
+  async active(req, res) {
+    const { active } = req.body;
+    const { id } = req.params;
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        { $set: { active: active } }
+      );
+      return res.status(200).json({ message: "Atualizado com sucesso" });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao ativar/bloquear o produto",
         type: error.message,
       };
       return res.status(400).json(erro);

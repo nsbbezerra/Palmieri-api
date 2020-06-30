@@ -9,6 +9,7 @@ const ProductController = require("../controllers/productController");
 const DashboardController = require("../controllers/dashboardController");
 const DepoimentsController = require("../controllers/depoimentsController");
 const CategoryController = require("../controllers/categoryController");
+const SiteController = require("../controllers/siteController");
 
 //CADASTRO DE CATEGORIAS
 router.post("/category", upload.single("thumbnail"), CategoryController.store);
@@ -20,6 +21,7 @@ router.put("/category/:id", CategoryController.active);
 router.post("/products", upload.single("thumbnail"), ProductController.store);
 router.get("/products", ProductController.index);
 router.put("/products", upload.single("thumbnail"), ProductController.edit);
+router.put("/active/:id", ProductController.active);
 
 //CADASTRO DOS PORTIFÓLIOS
 router.post("/catalog", upload.single("catalog"), PortifolioController.store);
@@ -34,5 +36,11 @@ router.get("/listProducts", DashboardController.findProducts);
 router.post("/depoiments", upload.single("avatar"), DepoimentsController.store);
 router.delete("/depoiments/:id", DepoimentsController.remove);
 router.get("/depoiments", DepoimentsController.index);
+
+//SITE
+router.get("/home", SiteController.home);
+router.post("/productPage", SiteController.productsPage);
+router.post("/findProduct", SiteController.findProduct);
+router.get("/category", SiteController.findCategory);
 
 module.exports = router;
