@@ -1,4 +1,4 @@
-const Category = require("../models/category");
+const Category = require("../models/categrory");
 const Product = require("../models/products");
 const Catalog = require("../models/portifilio");
 const config = require("../configs/index");
