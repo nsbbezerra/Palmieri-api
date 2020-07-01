@@ -6,7 +6,7 @@ const upload = multer(multerConfig);
 
 const PortifolioController = require("../controllers/portifolioController");
 const ProductController = require("../controllers/productController");
-const DashboardController = require("../controllers/dashboardController");
+const DashboardController = require("../controllers/dashboarcdController");
 const DepoimentsController = require("../controllers/depoimentsController");
 const CategoryController = require("../controllers/categoryController");
 const SiteController = require("../controllers/siteController");
@@ -30,8 +30,8 @@ router.get("/catalog/:product", PortifolioController.show);
 router.put("/catalog/:id", PortifolioController.active);
 
 //DASHBOARD
-router.get("/dashboard", DashboardController.dashboard);
-router.get("/listProducts", DashboardController.findProducts);
+router.get("/findCategories", DashboardController.findCategory);
+router.get("/findProducts", DashboardController.findProduct);
 
 //DEPOIMENTOS
 router.post("/depoiments", upload.single("avatar"), DepoimentsController.store);
