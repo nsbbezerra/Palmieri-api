@@ -27,6 +27,7 @@ router.put("/active/:id", ProductController.active);
 router.post("/catalog", upload.single("catalog"), PortifolioController.store);
 router.delete("/catalog/:id", PortifolioController.remove);
 router.get("/catalog/:product", PortifolioController.show);
+router.put("/catalog/:id", PortifolioController.active);
 
 //DASHBOARD
 router.get("/dashboard", DashboardController.dashboard);
