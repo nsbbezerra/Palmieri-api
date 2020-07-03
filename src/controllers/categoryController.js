@@ -37,51 +37,42 @@ module.exports = {
   async edit(req, res) {
     const { filename } = req.file;
     const { name, imageDescription } = req.body;
+    const { id } = req.params;
 
     try {
-      const category = await Category.findOne({ name });
+      const category = await Category.findOne({ _id: id });
 
-      if (filename !== category.thumbnail) {
-        const pathToImage = path.resolve(
-          __dirname,
-          "..",
-          "..",
-          "uploads",
-          `${category.thumbnail}`
-        );
+      const pathToImage = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "uploads",
+        `${category.thumbnail}`
+      );
 
-        await ulinkFile(pathToImage);
+      await ulinkFile(pathToImage);
 
-        async function ulinkFile(filePath) {
-          await fs.unlink(filePath, function (err) {
-            if (err)
-              return res.status(400).json({
-                erro: {
-                  message: "Erro ao deletar o arquivo",
-                  type: err.message,
-                },
-              });
-            console.log("file deleted successfully");
-          });
-        }
-
-        await Category.findOneAndUpdate(
-          { name: name },
-          { $set: { name, imageDescription, thumbnail: filename } }
-        );
-
-        return res
-          .status(200)
-          .json({ message: "Categoria alterada com sucesso" });
-      } else {
-        await Category.findOneAndUpdate(
-          { name: name },
-          { $set: { name, imageDescription } }
-        );
-        return res
-          .status(200)
-          .json({ message: "Categoria alterada com sucesso" });
+      async function ulinkFile(filePath) {
+        await fs.unlink(filePath, function (err) {
+          if (err)
+            return res.status(400).json({
+              erro: {
+                message: "Erro ao deletar o arquivo",
+                type: err.message,
+              },
+            });
+          console.log("file deleted successfully");
+        });
       }
+
+      await Category.findOneAndUpdate(
+        { _id: id },
+        { $set: { name, imageDescription, thumbnail: filename } }
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Categoria alterada com sucesso" });
     } catch (error) {
       const erro = {
         message: "Erro ao alterar a categoria",

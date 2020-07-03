@@ -14,7 +14,11 @@ const SiteController = require("../controllers/siteController");
 //CADASTRO DE CATEGORIAS
 router.post("/category", upload.single("thumbnail"), CategoryController.store);
 router.get("/category", CategoryController.index);
-router.put("/category", upload.single("thumbnail"), CategoryController.edit);
+router.put(
+  "/categoryEdit/:id",
+  upload.single("thumbnail"),
+  CategoryController.edit
+);
 router.put("/category/:id", CategoryController.active);
 
 //CADASTRO DE PRODUTOS
