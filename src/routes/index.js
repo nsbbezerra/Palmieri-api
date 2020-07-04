@@ -24,8 +24,9 @@ router.put("/category/:id", CategoryController.active);
 //CADASTRO DE PRODUTOS
 router.post("/products", upload.single("thumbnail"), ProductController.store);
 router.get("/products", ProductController.index);
-router.put("/products", upload.single("thumbnail"), ProductController.edit);
+router.put("/products/:id", upload.single("thumbnail"), ProductController.edit);
 router.put("/active/:id", ProductController.active);
+router.get("/findByCategory/:category", ProductController.findByCategory);
 
 //CADASTRO DOS PORTIFÓLIOS
 router.post("/catalog", upload.single("catalog"), PortifolioController.store);
