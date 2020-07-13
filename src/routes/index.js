@@ -29,7 +29,7 @@ router.put("/active/:id", ProductController.active);
 router.get("/findByCategory/:category", ProductController.findByCategory);
 
 //CADASTRO DOS PORTIFÓLIOS
-router.post("/catalog", upload.single("catalog"), PortifolioController.create);
+//router.post("/catalog", upload.single("catalog"), PortifolioController.create);
 router.delete("/catalog/:id", PortifolioController.remove);
 router.get("/catalog/:product", PortifolioController.show);
 router.put("/catalog/:id", PortifolioController.active);
