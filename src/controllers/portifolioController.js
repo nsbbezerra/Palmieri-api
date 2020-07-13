@@ -4,7 +4,7 @@ const path = require("path");
 const configs = require("../configs/index");
 
 module.exports = {
-  /* async create(req, res) {
+  async createPort(req, res) {
     const { filename } = req.file;
     const { product, imageDescription } = req.body;
 
@@ -25,9 +25,9 @@ module.exports = {
       };
       return res.status(400).json(erro);
     }
-  }, */
+  },
 
-  async remove(req, res) {
+  async removePorti(req, res) {
     const { id } = req.params;
 
     try {
