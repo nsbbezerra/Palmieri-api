@@ -1,5 +1,5 @@
 module.exports = {
   db_connection:
-    "mongodb://palmieri:natan210290@ds061681.mlab.com:61681/palmieri",
+    "mongodb://palmieriunifor01:natan210290@mongodb.palmieriuniformes.com:27017/palmieriunifor01",
   photo_url: "http://localhost:3333/img",
 };

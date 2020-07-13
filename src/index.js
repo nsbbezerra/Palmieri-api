@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 app.use("/img", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
-const port = process.env.PORT || 3333;
+const port = process.env.PORT || 21108;
 
 app.listen(port, function () {
   console.log("Servidor Ativo na Porta", port);
