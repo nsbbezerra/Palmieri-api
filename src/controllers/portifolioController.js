@@ -4,7 +4,7 @@ const path = require("path");
 const configs = require("../configs/index");
 
 module.exports = {
-  async store(req, res) {
+  async create(req, res) {
     const { filename } = req.file;
     const { product, imageDescription } = req.body;
 
