@@ -2,9 +2,15 @@ const Category = require("../models/categrory");
 const fs = require("fs");
 const path = require("path");
 const configs = require("../configs/index");
+const multer = require("multer");
+const multerConfig = require("../configs/multerConfig");
+const express = require("express");
+const router = express.Router();
 
-module.exports = {
-  async store(req, res) {
+router.post(
+  "/category",
+  multer(multerConfig).single("thumbnail"),
+  async (req, res) => {
     const { name, imageDescription } = req.body;
     const { filename } = req.file;
 
@@ -32,9 +38,13 @@ module.exports = {
       };
       return res.status(400).json(erro);
     }
-  },
+  }
+);
 
-  async edit(req, res) {
+router.put(
+  "/categoryEdit/:id",
+  multer(multerConfig).single("thumbnail"),
+  async (req, res) => {
     const { filename } = req.file;
     const { name, imageDescription } = req.body;
     const { id } = req.params;
@@ -80,38 +90,38 @@ module.exports = {
       };
       return res.status(400).json(erro);
     }
-  },
+  }
+);
 
-  async index(req, res) {
-    try {
-      const category = await Category.find();
-      const urlImage = configs.photo_url;
-      return res.status(200).json({ category, urlImage });
-    } catch (error) {
-      const erro = {
-        message: "Erro ao buscar as categorias",
-        type: error.message,
-      };
-      return res.status(400).json(erro);
-    }
-  },
+router.get("/category", async (req, res) => {
+  try {
+    const category = await Category.find();
+    const urlImage = configs.photo_url;
+    return res.status(200).json({ category, urlImage });
+  } catch (error) {
+    const erro = {
+      message: "Erro ao buscar as categorias",
+      type: error.message,
+    };
+    return res.status(400).json(erro);
+  }
+});
 
-  async active(req, res) {
-    const { id } = req.params;
-    const { active } = req.body;
+router.put("/category/:id", async (req, res) => {
+  const { id } = req.params;
+  const { active } = req.body;
 
-    try {
-      await Category.findOneAndUpdate({ _id: id }, { $set: { active } });
+  try {
+    await Category.findOneAndUpdate({ _id: id }, { $set: { active } });
 
-      return res
-        .status(200)
-        .json({ message: "Categoria alterada com sucesso" });
-    } catch (error) {
-      const erro = {
-        message: "Erro ao alterar a categoria",
-        type: error.message,
-      };
-      return res.status(400).json(erro);
-    }
-  },
-};
+    return res.status(200).json({ message: "Categoria alterada com sucesso" });
+  } catch (error) {
+    const erro = {
+      message: "Erro ao alterar a categoria",
+      type: error.message,
+    };
+    return res.status(400).json(erro);
+  }
+});
+
+module.exports = (app) => app.use("/", router);
