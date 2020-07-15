@@ -1,16 +1,18 @@
 const Category = require("../models/categrory");
 const Product = require("../models/products");
 const Catalog = require("../models/portifilio");
+const Comments = require("../models/depoiments");
 const config = require("../configs/index");
 const express = require("express");
 const router = express.Router();
 
 router.get("/home", async (req, res) => {
   try {
+    const comments = await Comments.find();
     const category = await Category.find({ active: true });
     const product = await Product.find({ active: true });
     const urlImage = config.photo_url;
-    return res.status(200).json({ category, product, urlImage });
+    return res.status(200).json({ category, product, comments, urlImage });
   } catch (error) {
     const erro = {
       message: "Erro ao buscar informações",
