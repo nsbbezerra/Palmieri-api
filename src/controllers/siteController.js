@@ -11,8 +11,21 @@ router.get("/home", async (req, res) => {
     const comments = await Comments.find();
     const category = await Category.find({ active: true });
     const product = await Product.find({ active: true });
+    const catalog = await Catalog.find();
+    var catalogs = [];
+    await product.forEach((prod) => {
+      let id = prod._id;
+      let idString = id.toString();
+      const result = catalog.filter((obj) => obj.product == idString);
+      if (result.length) {
+        catalogs.push(result[0]);
+      }
+    });
+
     const urlImage = config.photo_url;
-    return res.status(200).json({ category, product, comments, urlImage });
+    return res
+      .status(200)
+      .json({ category, product, catalogs, comments, urlImage });
   } catch (error) {
     const erro = {
       message: "Erro ao buscar informações",

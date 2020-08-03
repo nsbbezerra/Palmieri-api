@@ -18,7 +18,7 @@ require("./controllers/depoimentsController")(app);
 require("./controllers/productController")(app);
 require("./controllers/siteController")(app);
 
-const port = process.env.PORT || 21108;
+const port = process.env.PORT || 21489;
 
 app.listen(port, function () {
   console.log("Servidor Ativo na Porta", port);
