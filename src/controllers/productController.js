@@ -26,7 +26,7 @@ router.post(
       if (product) {
         return res.status(400).json({ message: "Produto já cadastrado" });
       }
-      await Products.create({
+      const productSave = await Products.create({
         name,
         category,
         description,
@@ -36,9 +36,8 @@ router.post(
         imageDescription,
         active: true,
       });
-      return res
-        .status(200)
-        .json({ message: "Produto cadastrado com sucesso" });
+      let idProduct = productSave._id;
+      return res.status(200).json(idProduct);
     } catch (error) {
       const erro = {
         message: "Erro ao cadastrar o produto",
@@ -148,5 +147,54 @@ router.get("/findByCategory/:category", async (req, res) => {
     return res.status(400).json(erro);
   }
 });
+
+router.post(
+  "/saveModels/:id",
+  multer(multerConfig).single("models"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { desc, title } = req.body;
+    const { filename } = req.file;
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        { $push: { models: { image: filename, desc, title } } }
+      );
+      const models = await Products.findOne({ _id: id });
+      const urlImage = configs.photo_url;
+      return res.status(200).json({ urlImage, models });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao cadastrar as modelagens",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  }
+);
+
+router.post(
+  "/saveTables/:id",
+  multer(multerConfig).single("tables"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { filename } = req.file;
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        { $push: { table: { image: filename } } }
+      );
+      const tables = await Products.findOne({ _id: id });
+      const urlImage = configs.photo_url;
+      return res.status(200).json({ tables, urlImage });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao cadastrar as tabelas",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  }
+);
 
 module.exports = (app) => app.use("/", router);

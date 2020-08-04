@@ -9,6 +9,18 @@ const productSchema = new mongoose.Schema({
   video: String,
   imageDescription: String,
   active: Boolean,
+  models: [
+    {
+      image: String,
+      desc: String,
+      title: String,
+    },
+  ],
+  table: [
+    {
+      image: String,
+    },
+  ],
 });
 
 const Products = mongoose.model("Products", productSchema);
