@@ -17,6 +17,7 @@ require("./controllers/dashboarcdController")(app);
 require("./controllers/depoimentsController")(app);
 require("./controllers/productController")(app);
 require("./controllers/siteController")(app);
+require("./controllers/modelagemController")(app);
 
 const port = process.env.PORT || 21489;
 

@@ -2,6 +2,8 @@ const Category = require("../models/categrory");
 const Product = require("../models/products");
 const Catalog = require("../models/portifilio");
 const Comments = require("../models/depoiments");
+const Models = require("../models/modelagem");
+const Tabels = require("../models/tabelas");
 const config = require("../configs/index");
 const express = require("express");
 const router = express.Router();
@@ -11,6 +13,8 @@ router.get("/home", async (req, res) => {
     const comments = await Comments.find();
     const category = await Category.find({ active: true });
     const product = await Product.find({ active: true });
+    const models = await Models.find();
+    const tables = await Tabels.find();
     const catalog = await Catalog.find();
     var catalogs = [];
     await product.forEach((prod) => {
@@ -25,7 +29,15 @@ router.get("/home", async (req, res) => {
     const urlImage = config.photo_url;
     return res
       .status(200)
-      .json({ category, product, catalogs, comments, urlImage });
+      .json({
+        category,
+        product,
+        catalogs,
+        comments,
+        urlImage,
+        models,
+        tables,
+      });
   } catch (error) {
     const erro = {
       message: "Erro ao buscar informações",
