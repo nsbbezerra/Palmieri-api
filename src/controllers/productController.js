@@ -48,6 +48,30 @@ router.post(
   }
 );
 
+router.post(
+  "/middle/:id",
+  multer(multerConfig).single("middle"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { filename } = req.file;
+
+    try {
+      await Products.findOneAndUpdate(
+        { _id: id },
+        { $set: { imageDescMiddle: filename } }
+      );
+
+      return res.status(200).json({ message: "Imagem cadastrada com sucesso" });
+    } catch (error) {
+      const erro = {
+        message: "Erro ao cadastrar a imagem",
+        type: error.message,
+      };
+      return res.status(400).json(erro);
+    }
+  }
+);
+
 router.get("/products", async (req, res) => {
   try {
     const products = await Products.find();

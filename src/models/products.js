@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   slug: String,
   video: String,
   imageDescription: String,
+  imageDescMiddle: String,
   active: Boolean,
   models: [
     {
